@@ -6,11 +6,10 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 
-# Fix for ERR_OSSL_EVP_UNSUPPORTED: Node 17+ uses OpenSSL 3, 
-# but older webpack/react-scripts versions use a hashing algorithm that is now legacy.
+# Fix for ERR_OSSL_EVP_UNSUPPORTED: Node 17+ uses OpenSSL 3
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-# Build the client-side React app as specified in heroku-postbuild
+# Build the client-side React app
 RUN npm run heroku-postbuild
 
 FROM mirror.gcr.io/library/node:22-alpine

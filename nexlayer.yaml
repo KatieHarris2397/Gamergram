@@ -10,7 +10,7 @@ application:
         NODE_ENV: production
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
+        ROOT_URL: "<% URL %>"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:
