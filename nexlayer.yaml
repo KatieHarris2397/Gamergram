@@ -1,0 +1,18 @@
+application:
+  name: rich-sage-gamergram
+  pods:
+    - name: app
+      image: "# filled by pipeline"
+      path: /
+      servicePorts:
+        - 3000
+      vars:
+        NODE_ENV: production
+        PORT: "3000"
+        HOSTNAME: "0.0.0.0"
+        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
+    - name: mongo
+      image: mirror.gcr.io/library/mongo:7
+      servicePorts:
+        - 27017
+      vars: {}
