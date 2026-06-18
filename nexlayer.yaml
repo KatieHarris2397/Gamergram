@@ -1,8 +1,8 @@
 application:
-  name: rich-sage-gamergram
+  name: Gamergram
   pods:
     - name: app
-      image: "# filled by pipeline"
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edbf055f2"
       path: /
       servicePorts:
         - 3000
@@ -10,7 +10,7 @@ application:
         NODE_ENV: production
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        ROOT_URL: "<% URL %>"
+        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:

@@ -13,10 +13,10 @@ platform: nexlayer
 schema_version: "1"
 
 project:
-  name: rich-sage-gamergram
+  name: Gamergram
   runtime: 
   port: 80
-  live_url: "https://kitbear-studio-rich-sage-gamergram.cloud.nexlayer.ai"
+  live_url: "https://kitbear-studio-gamergram.cloud.nexlayer.ai"
   deploy_branch: nexlayer
   repo: "https://github.com/KatieHarris2397/Gamergram"
   config_files:

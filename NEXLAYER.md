@@ -15,7 +15,7 @@
 
 ## Project Summary
 <!-- nexlayer:section agent-managed=project_summary -->
-Gamergram is a MERN stack social media application that allows users to create posts, like, and comment, featuring Google OAuth authentication.
+Gamergram is a MERN stack social media application allowing users to create posts, like and comment on content, and authenticate via Google OAuth.
 <!-- nexlayer:end -->
 
 ## Technology Stack
@@ -24,8 +24,8 @@ Gamergram is a MERN stack social media application that allows users to create p
 |------|------|---------|---------------|
 | Node.js | language | 22 | Dockerfile |
 | Express | framework | 4.17.1 | package.json |
-| React | framework | Not specified | README.md, package.json |
-| MongoDB | database | Not specified | package.json, db.js |
+| MongoDB | database | latest | package.json |
+| React | framework | latest | README.md |
 | Mongoose | tool | 5.9.19 | package.json |
 <!-- nexlayer:end -->
 
@@ -34,8 +34,8 @@ Gamergram is a MERN stack social media application that allows users to create p
 - client/ — React frontend source code
 - models/ — Mongoose schema definitions
 - routes/ — Express API route handlers
-- middleware/ — Express middleware functions
-- app.js — Application entry point and server configuration
+- middleware/ — Express request middleware
+- app.js — Main server entry point
 - db.js — Database connection logic
 <!-- nexlayer:end -->
 
@@ -82,16 +82,16 @@ JWT_SECRET=your-jwt-secret
 | `app` | `NODE_ENV` | `production` | plain |
 | `app` | `PORT` | `"3000"` | plain |
 | `app` | `HOSTNAME` | `"0.0.0.0"` | plain |
-| `app` | `ROOT_URL` | `"<% URL %>"` | plain |
+| `app` | `MONGO_URI` | `"mongodb://${mongo:27017}/gamergram"` | inter-pod |
 
 ### nexlayer.yaml
 
 ```yaml
 application:
-  name: rich-sage-gamergram
+  name: Gamergram
   pods:
     - name: app
-      image: "# filled by pipeline"
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edbf055f2"
       path: /
       servicePorts:
         - 3000
@@ -99,7 +99,7 @@ application:
         NODE_ENV: production
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        ROOT_URL: "<% URL %>"
+        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:
@@ -138,17 +138,17 @@ application:
 
 ## Nexlayer Configuration
 <!-- nexlayer:section agent-managed=nexlayer_config -->
-**Last deployed:** 2026-06-17T23:19:58Z  
-**Live URL:** https://kitbear-studio-rich-sage-gamergram.cloud.nexlayer.ai  
+**Last deployed:** 2026-06-18T18:22:16Z  
+**Live URL:** https://kitbear-studio-gamergram.cloud.nexlayer.ai  
 **Runtime:**  · **Port:** auto-detected  
 **Deploy branch:** nexlayer  
 
 ```yaml
 application:
-  name: rich-sage-gamergram
+  name: Gamergram
   pods:
     - name: app
-      image: "# filled by pipeline"
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edbf055f2"
       path: /
       servicePorts:
         - 3000
@@ -156,7 +156,7 @@ application:
         NODE_ENV: production
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        ROOT_URL: "<% URL %>"
+        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:
@@ -169,9 +169,10 @@ application:
 <!-- nexlayer:section agent-managed=build_history -->
 | Date | Status | Notes |
 |------|--------|-------|
-| 2026-06-17T22:54:48Z | analyzed | initial repo analysis |
-| 2026-06-17T23:19:58Z | success | deployed https://kitbear-studio-rich-sage-gamergram.cloud.nexlayer.ai |
+| 2026-06-18T18:14:09Z | analyzed | initial repo analysis |
+| 2026-06-18T18:22:16Z | success | deployed https://kitbear-studio-gamergram.cloud.nexlayer.ai |
 <!-- nexlayer:end -->
+
 
 
 
