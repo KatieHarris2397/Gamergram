@@ -15,7 +15,7 @@
 
 ## Project Summary
 <!-- nexlayer:section agent-managed=project_summary -->
-Gamergram is a MERN stack social media application allowing users to create posts, like and comment on content, and authenticate via Google OAuth.
+Gamergram is a social media web application built on the MERN stack that allows users to create posts, like and comment on content, and authenticate via Google OAuth.
 <!-- nexlayer:end -->
 
 ## Technology Stack
@@ -24,9 +24,9 @@ Gamergram is a MERN stack social media application allowing users to create post
 |------|------|---------|---------------|
 | Node.js | language | 22 | Dockerfile |
 | Express | framework | 4.17.1 | package.json |
-| MongoDB | database | latest | package.json |
-| React | framework | latest | README.md |
-| Mongoose | tool | 5.9.19 | package.json |
+| React | framework | not specified | README.md, package.json |
+| MongoDB | database | not specified | package.json, Dockerfile |
+| Mongoose | database | 5.9.19 | package.json |
 <!-- nexlayer:end -->
 
 ## Repository Structure
@@ -34,9 +34,9 @@ Gamergram is a MERN stack social media application allowing users to create post
 - client/ — React frontend source code
 - models/ — Mongoose schema definitions
 - routes/ — Express API route handlers
-- middleware/ — Express request middleware
-- app.js — Main server entry point
-- db.js — Database connection logic
+- middleware/ — Request validation and auth middleware
+- config/ — Application configuration
+- app.js — Main entry point for the Express server
 <!-- nexlayer:end -->
 
 ## External Services Required
@@ -44,7 +44,7 @@ Gamergram is a MERN stack social media application allowing users to create post
 Services that must be configured separately (not deployed by Nexlayer):
 
 - Google OAuth API
-- SendGrid API (nodemailer-sendgrid-transport)
+- SendGrid (via nodemailer-sendgrid-transport)
 <!-- nexlayer:end -->
 
 ## Local Development Setup
@@ -79,27 +79,27 @@ JWT_SECRET=your-jwt-secret
 
 | Pod | Variable | Value | Kind |
 |-----|----------|-------|------|
-| `app` | `NODE_ENV` | `production` | plain |
+| `app` | `NODE_ENV` | `"production"` | plain |
 | `app` | `PORT` | `"3000"` | plain |
 | `app` | `HOSTNAME` | `"0.0.0.0"` | plain |
-| `app` | `MONGO_URI` | `"mongodb://${mongo:27017}/gamergram"` | inter-pod |
+| `app` | `MONGO_URI` | `"mongodb://mongo.pod:27017/gamergram"` | plain |
 
 ### nexlayer.yaml
 
 ```yaml
 application:
-  name: Gamergram
+  name: gamergram
   pods:
     - name: app
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edbf055f2"
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edc6b0eee"
       path: /
       servicePorts:
         - 3000
       vars:
-        NODE_ENV: production
+        NODE_ENV: "production"
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
+        MONGO_URI: "mongodb://mongo.pod:27017/gamergram"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:
@@ -138,25 +138,25 @@ application:
 
 ## Nexlayer Configuration
 <!-- nexlayer:section agent-managed=nexlayer_config -->
-**Last deployed:** 2026-06-18T18:22:16Z  
+**Last deployed:** 2026-06-18T20:35:40Z  
 **Live URL:** https://kitbear-studio-gamergram.cloud.nexlayer.ai  
 **Runtime:**  · **Port:** auto-detected  
 **Deploy branch:** nexlayer  
 
 ```yaml
 application:
-  name: Gamergram
+  name: gamergram
   pods:
     - name: app
-      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edbf055f2"
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:19edc6b0eee"
       path: /
       servicePorts:
         - 3000
       vars:
-        NODE_ENV: production
+        NODE_ENV: "production"
         PORT: "3000"
         HOSTNAME: "0.0.0.0"
-        MONGO_URI: "mongodb://${mongo:27017}/gamergram"
+        MONGO_URI: "mongodb://mongo.pod:27017/gamergram"
     - name: mongo
       image: mirror.gcr.io/library/mongo:7
       servicePorts:
@@ -169,9 +169,10 @@ application:
 <!-- nexlayer:section agent-managed=build_history -->
 | Date | Status | Notes |
 |------|--------|-------|
-| 2026-06-18T18:14:09Z | analyzed | initial repo analysis |
-| 2026-06-18T18:22:16Z | success | deployed https://kitbear-studio-gamergram.cloud.nexlayer.ai |
+| 2026-06-18T20:28:11Z | analyzed | initial repo analysis |
+| 2026-06-18T20:35:40Z | success | deployed https://kitbear-studio-gamergram.cloud.nexlayer.ai |
 <!-- nexlayer:end -->
+
 
 
 

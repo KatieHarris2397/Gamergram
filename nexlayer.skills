@@ -13,7 +13,7 @@ platform: nexlayer
 schema_version: "1"
 
 project:
-  name: Gamergram
+  name: gamergram
   runtime: 
   port: 80
   live_url: "https://kitbear-studio-gamergram.cloud.nexlayer.ai"
@@ -42,11 +42,11 @@ nexlayer_yaml:
             - "<integer port the container listens on>"
           vars:
             - key: "<ENV_VAR_NAME>"
-              value: "<literal value OR ${otherPodName:port} for inter-pod refs>"
+              value: "<literal value OR <otherPodName>.pod:<port> for inter-pod refs>"
 
   rules:
     - "Pod names double as internal hostnames. 'db' is reachable at host 'db' from other pods."
-    - "Use ${podName:port} to reference another pod. Example: ${db:5432} resolves to db's address."
+    - "Use <podName>.pod:<port> to reference another pod. Example: db.pod:5432 resolves to db's address."
     - "No 'command:' field — the container's CMD/ENTRYPOINT runs as-is."
     - "All pods share one public hostname. Path routing decides which pod handles which URL."
     - "Image field uses '# filled by pipeline' as placeholder — the orchestrator patches it."
@@ -73,7 +73,7 @@ nexlayer_yaml:
             path: /
             servicePorts: [3000]
             vars:
-              - {key: DATABASE_URL, value: "postgres://app:secret@${db:5432}/mydb"}
+              - {key: DATABASE_URL, value: "postgres://app:secret@db.pod:5432/mydb"}
           - name: db
             image: mirror.gcr.io/library/postgres:16-alpine
             path: /db
@@ -90,7 +90,7 @@ nexlayer_yaml:
         path: /cache
         servicePorts: [6379]
       # Reference from app pod:
-      # - {key: REDIS_URL, value: "redis://${cache:6379}"}
+      # - {key: REDIS_URL, value: "redis://cache.pod:6379"}
 
     with_worker: |
       # Background worker — no path routing, no public port needed
@@ -100,7 +100,7 @@ nexlayer_yaml:
         servicePorts: [8080]
         vars:
           - {key: WORKER_MODE, value: "true"}
-          - {key: QUEUE_URL,   value: "${cache:6379}"}
+          - {key: QUEUE_URL,   value: "cache.pod:6379"}
 
 # ── DOCKERFILE REFERENCE ─────────────────────────────────────────────────────
 dockerfile:
@@ -177,7 +177,7 @@ agent_tasks:
   add_postgres_database:
     steps:
       - "1. Add a 'db' pod to nexlayer.yaml pods: list (see patterns.with_postgres above)."
-      - "2. Add DATABASE_URL to your app pod vars: using ${db:5432} syntax."
+      - "2. Add DATABASE_URL to your app pod vars: using db.pod:5432 syntax."
       - "3. Install your DB client library (e.g. 'pg' for Node, 'psycopg2' for Python)."
       - "4. Push to nexlayer — Nexlayer rebuilds and redeploys both pods together."
     notes: "Nexlayer provisions the db pod in the same namespace — no external DB service needed."
@@ -185,7 +185,7 @@ agent_tasks:
   add_redis_cache:
     steps:
       - "1. Add a 'cache' pod with image mirror.gcr.io/library/redis:7-alpine, port 6379."
-      - "2. Add REDIS_URL var to your app pod: redis://${cache:6379}"
+      - "2. Add REDIS_URL var to your app pod: redis://cache.pod:6379"
       - "3. Push to nexlayer."
 
   change_exposed_port:
