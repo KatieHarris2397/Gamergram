@@ -1,0 +1,18 @@
+application:
+  name: gamergram
+  pods:
+    - name: app
+      image: "registry.nexlayer.io/user_01kna6j8vrcfj9q0wjtq5qsq3n/gamergram:9edc79c-fix1"
+      path: /
+      servicePorts:
+        - 3000
+      vars:
+        NODE_ENV: "production"
+        PORT: "3000"
+        HOSTNAME: "0.0.0.0"
+        MONGO_URI: "mongodb://mongo.pod:27017/gamergram"
+    - name: mongo
+      image: mirror.gcr.io/library/mongo:7
+      servicePorts:
+        - 27017
+      vars: {}
